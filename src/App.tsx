@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { ChakraProvider } from "@chakra-ui/react";
+import Pages from "pages";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ToastContainer } from "react-toastify";
+import { ReactQueryDevtools } from "react-query/devtools";
+import ErrorBoundary from "components/ErrorBoundary";
+import theme from "styles/theme";
+import "react-toastify/dist/ReactToastify.css";
+import "./App.css";
 
-function App() {
+const RenderDevTool = () => {
+  if (process.env.NODE_ENV === "development") {
+    return <ReactQueryDevtools initialIsOpen={false} />;
+  }
+  return null;
+};
+
+const App = () => {
+  const queryClient = new QueryClient();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ChakraProvider theme={theme}>
+      <QueryClientProvider client={queryClient}>
+        <ToastContainer />
+        <ErrorBoundary>
+          <Pages />
+        </ErrorBoundary>
+        <RenderDevTool />
+      </QueryClientProvider>
+    </ChakraProvider>
   );
-}
+};
 
 export default App;
