@@ -14,10 +14,17 @@ const axiosInstance: AxiosInstance = axios.create({
 // https://dev.to/charlintosh/setting-up-axios-interceptors-react-js-typescript-12k5
 // This adds a token before all the requests.
 // https://stackoverflow.com/questions/57251719/acquiring-a-new-token-with-axios-interceptors
-const onRequest = (request: AxiosRequestConfig): AxiosRequestConfig => {
+const onRequest = (request: AxiosRequestConfig): any => {
   request.headers!.Authorization = localStorage.getItem("key-here") || "";
   return request;
 };
+
+// const onRequest = (request: AxiosRequestConfig): any => {
+//   const headers: any = request.headers || {};
+//   headers.Authorization = localStorage.getItem("key-here") || "";
+//   request.headers = headers;
+//   return request;
+// };
 
 const onRequestError = (error: AxiosError): Promise<AxiosError> => {
   return Promise.reject(error);
